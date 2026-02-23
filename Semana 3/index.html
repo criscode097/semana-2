@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🏖️ VacaRent | Gestión de Propiedades</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-container">
+
+      <!-- Header -->
+      <header class="header">
+        <h1>🏖️ VacaRent</h1>
+        <p class="subtitle">Sistema de Gestión de Alquiler Vacacional</p>
+      </header>
+
+      <!-- Navigation Tabs -->
+      <nav class="tabs">
+        <button class="tab-btn active" data-tab="catalog">🏘️ Propiedades</button>
+        <button class="tab-btn" data-tab="users">👥 Usuarios</button>
+        <button class="tab-btn" data-tab="transactions">🔄 Reservas</button>
+        <button class="tab-btn" data-tab="stats">📊 Estadísticas</button>
+      </nav>
+
+      <!-- Tab Content -->
+      <main class="tab-content">
+
+        <!-- Propiedades -->
+        <section id="catalog" class="tab-panel active">
+          <div class="panel-header">
+            <h2>🏘️ Catálogo de Propiedades</h2>
+            <div class="actions">
+              <input type="text" id="search-input" placeholder="Buscar por nombre o ciudad..." />
+              <select id="filter-type">
+                <option value="all">Todos los tipos</option>
+                <option value="Apartment">Apartamento</option>
+                <option value="House">Casa</option>
+                <option value="Villa">Villa</option>
+                <option value="Cabin">Cabaña</option>
+              </select>
+              <select id="filter-status">
+                <option value="all">Todos</option>
+                <option value="active">Disponibles</option>
+                <option value="inactive">No disponibles</option>
+              </select>
+              <button id="add-item-btn" class="btn btn-primary">+ Agregar propiedad</button>
+            </div>
+          </div>
+          <div id="item-list" class="items-grid"></div>
+          <div id="empty-state" class="empty-state" style="display: none;">
+            <p>🏚️ No hay propiedades en el catálogo</p>
+            <p class="hint">Agrega tu primera propiedad usando el botón superior</p>
+          </div>
+        </section>
+
+        <!-- Usuarios -->
+        <section id="users" class="tab-panel">
+          <div class="panel-header">
+            <h2>👥 Usuarios del Sistema</h2>
+            <div class="actions">
+              <input type="text" id="search-users" placeholder="Buscar usuario..." />
+              <select id="filter-role">
+                <option value="all">Todos los roles</option>
+                <option value="Guest">Huésped</option>
+                <option value="Host">Anfitrión</option>
+              </select>
+              <button id="add-user-btn" class="btn btn-primary">+ Agregar usuario</button>
+            </div>
+          </div>
+          <div id="user-list" class="users-grid"></div>
+        </section>
+
+        <!-- Reservas -->
+        <section id="transactions" class="tab-panel">
+          <div class="panel-header">
+            <h2>🔄 Historial de Reservas</h2>
+          </div>
+          <div id="transaction-list" class="transactions-list"></div>
+        </section>
+
+        <!-- Estadísticas -->
+        <section id="stats" class="tab-panel">
+          <div class="panel-header">
+            <h2>📊 Estadísticas del Sistema</h2>
+          </div>
+          <div id="stats-container" class="stats-grid">
+            <div class="stat-card">
+              <span class="stat-value" id="stat-total">0</span>
+              <span class="stat-label">Total Propiedades</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value" id="stat-active">0</span>
+              <span class="stat-label">Disponibles</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value" id="stat-inactive">0</span>
+              <span class="stat-label">No disponibles</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-value" id="stat-users">0</span>
+              <span class="stat-label">Usuarios</span>
+            </div>
+          </div>
+          <div id="stats-details" class="stats-details"></div>
+        </section>
+      </main>
+
+      <!-- Modal: propiedad -->
+      <div id="item-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="modal-title">Agregar Propiedad</h3>
+            <button class="close-btn" id="close-modal">&times;</button>
+          </div>
+          <form id="item-form" class="modal-form">
+            <div class="form-group">
+              <label for="item-type">Tipo de propiedad</label>
+              <select id="item-type" required>
+                <option value="">Selecciona un tipo</option>
+                <option value="Apartment">🏢 Apartamento</option>
+                <option value="House">🏠 Casa</option>
+                <option value="Villa">🏡 Villa</option>
+                <option value="Cabin">🌲 Cabaña</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="item-name">Nombre de la propiedad *</label>
+              <input type="text" id="item-name" placeholder="Ej: Villa Paraíso" required />
+            </div>
+            <div class="form-group">
+              <label for="item-location">Ciudad / Ubicación *</label>
+              <input type="text" id="item-location" placeholder="Ej: Cartagena, Colombia" required />
+            </div>
+            <!-- Campos dinámicos inyectados por JS según el tipo -->
+            <div id="dynamic-fields"></div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="button" class="btn btn-secondary" id="cancel-btn">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Modal: usuario -->
+      <div id="user-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Agregar Usuario</h3>
+            <button class="close-btn" id="close-user-modal">&times;</button>
+          </div>
+          <form id="user-form" class="modal-form">
+            <div class="form-group">
+              <label for="user-role">Rol</label>
+              <select id="user-role" required>
+                <option value="">Selecciona un rol</option>
+                <option value="Guest">🧳 Huésped</option>
+                <option value="Host">🔑 Anfitrión</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="user-name">Nombre *</label>
+              <input type="text" id="user-name" required />
+            </div>
+            <div class="form-group">
+              <label for="user-email">Email *</label>
+              <input type="email" id="user-email" required />
+            </div>
+            <div id="user-dynamic-fields"></div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="button" class="btn btn-secondary" id="cancel-user-btn">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
