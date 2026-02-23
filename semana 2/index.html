@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestor de Propiedades | Alquiler Vacacional</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <header class="header">
+      <h1>🏖️ Gestor de Propiedades</h1>
+      <p class="subtitle">Plataforma de Alquiler Vacacional</p>
+      <div class="stats-summary" id="stats-summary">
+        <span class="stat">Total: <strong id="stat-total">0</strong></span>
+        <span class="stat">Disponibles: <strong id="stat-active">0</strong></span>
+        <span class="stat">Ocupadas: <strong id="stat-inactive">0</strong></span>
+      </div>
+    </header>
+
+    <!-- Item Form -->
+    <section class="form-section">
+      <h2 id="form-title">➕ Nueva Propiedad</h2>
+      <form id="item-form" class="item-form">
+        <input type="hidden" id="item-id" value="">
+
+        <div class="form-group">
+          <label for="item-name">Nombre de la propiedad *</label>
+          <input
+            type="text"
+            id="item-name"
+            placeholder="Ej: Villa Paraíso – Cartagena"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="item-description">Descripción</label>
+          <textarea
+            id="item-description"
+            rows="3"
+            placeholder="Ubicación, comodidades, capacidad, reglas de la casa..."
+          ></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="item-category">Tipo de propiedad</label>
+            <select id="item-category">
+              <option value="apartment">🏢 Apartamento</option>
+              <option value="house">🏠 Casa</option>
+              <option value="villa">🏡 Villa</option>
+              <option value="cabin">🌲 Cabaña</option>
+              <option value="other">📌 Otro</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="item-priority">Categoría / Nivel</label>
+            <select id="item-priority">
+              <option value="low">🟢 Económica</option>
+              <option value="medium" selected>🟡 Estándar</option>
+              <option value="high">🔴 Premium</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Campos adicionales específicos del dominio -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="item-price">Precio por noche (USD)</label>
+            <input
+              type="number"
+              id="item-price"
+              placeholder="Ej: 120"
+              min="0"
+              step="1"
+            >
+          </div>
+          <div class="form-group">
+            <label for="item-capacity">Capacidad (huéspedes)</label>
+            <input
+              type="number"
+              id="item-capacity"
+              placeholder="Ej: 4"
+              min="1"
+              step="1"
+            >
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="submit-btn">
+            Crear
+          </button>
+          <button type="button" class="btn btn-secondary" id="cancel-btn" style="display: none;">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Filters & Search -->
+    <section class="filters-section">
+      <div class="filters">
+        <div class="filter-group">
+          <label for="filter-status">Estado:</label>
+          <select id="filter-status">
+            <option value="all">Todas</option>
+            <option value="active">Disponibles</option>
+            <option value="inactive">Ocupadas</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filter-category">Tipo:</label>
+          <select id="filter-category">
+            <option value="all">Todos</option>
+            <option value="apartment">Apartamento</option>
+            <option value="house">Casa</option>
+            <option value="villa">Villa</option>
+            <option value="cabin">Cabaña</option>
+            <option value="other">Otro</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filter-priority">Categoría:</label>
+          <select id="filter-priority">
+            <option value="all">Todas</option>
+            <option value="high">Premium</option>
+            <option value="medium">Estándar</option>
+            <option value="low">Económica</option>
+          </select>
+        </div>
+
+        <div class="filter-group search-group">
+          <label for="search-input">Buscar:</label>
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Buscar propiedades..."
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Item List -->
+    <section class="items-section">
+      <div class="items-header">
+        <h2>🏘️ Lista de Propiedades</h2>
+        <button class="btn btn-outline" id="clear-inactive">
+          🗑️ Limpiar Ocupadas
+        </button>
+      </div>
+
+      <div id="item-list" class="item-list">
+        <!-- Las propiedades se renderizarán aquí con JavaScript -->
+      </div>
+
+      <div id="empty-state" class="empty-state">
+        <p>🏚️ No hay propiedades que mostrar</p>
+        <p class="empty-state-hint">Registra tu primera propiedad usando el formulario arriba</p>
+      </div>
+    </section>
+
+    <!-- Detailed Stats -->
+    <section class="detailed-stats">
+      <h3>📊 Estadísticas Detalladas</h3>
+      <div id="stats-details" class="stats-grid">
+        <!-- Las estadísticas se renderizarán aquí con JavaScript -->
+      </div>
+    </section>
+  </div>
+
+  <!-- Script principal -->
+  <script src="script.js"></script>
+</body>
+</html>
